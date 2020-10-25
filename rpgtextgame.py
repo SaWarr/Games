@@ -14,10 +14,12 @@ class PLAYER:
     # Of the class player, we're defining a function that initialises it as itself 
     def __init__(self):
         self.name = ''
+        self.role = ''
         self.hp = 0
         self.mp = 0
         self.status_effects = []
-        self.location = 'start  '
+        self.location = 'start'
+        self.game_over = False
         # Empty placeholders for now, name, health points, mana points, status effects. 
         # Location added
 
@@ -60,8 +62,6 @@ def help_menu():
     print('#    Good luck and have fun!    #')
     title_screen_selections()
 
-def start_game(): 
-
 #### MAP #### 
     """
     Player starts at b2
@@ -92,7 +92,7 @@ solved_places = {'a1': False, 'a2': False, 'a3': False,'a4': False,
                 'd1': False, 'd2': False, 'd3': False,'d4': False,
                 }
 
-zone_map = {
+zonemap = {
     'a1': {
         ZONENAME: "Jungle",
         DESCRIPTION: 'You are surrounded by a lush jungle.',
@@ -257,7 +257,73 @@ zone_map = {
 
 #### GAME INTERACTIVITY ####
 
+def print_location ():
+    print('\n' + ('#' * (4 + len(myPlayer.location))))
+    print('# ' + myPlayer.location + ' #')
+    print('# ' + zonemap[myPlayer.position][DESCRIPTION] + ' #')
+    print('\n' + ('#' * (4 + len(myPlayer.location))))
 
 
+def prompt ():
+    print('\n' + '==============')
+    print('\n' + 'What would you like to do?')
+    action = input("> ")
+    acceptable_actions = ['move', 'travel', 'go', 'walk', 'quit', 'exit', 'examine', 'inspect', 'interact', 'look']
+    while action.lower() not in acceptable_actions:
+        print('Unknown action, please try again. \n')
+        action = input('>')
+    if action.lower() in ['quit', 'exit']:
+        sys.exit()
+    elif action.lower() in ['move', 'travel', 'go', 'walk']:
+        player_move(action.lower())
+    elif action.lower() in ['examine', 'inspect', 'interact', 'look']:
+        player_examine(action.lower())
+
+def player_move (myAction):
+    ask = 'Where would you like to move?\n'
+    dest = input(ask)
+    if dest in ['up', 'north']:
+        destination = zonemap[myPlayer.location][UP]
+        movement_handler(destination)
+    elif dest in ['down', 'south']:
+        destination = zonemap[myPlayer.location][DOWN]
+        movement_handler(destination)
+    elif dest in ['left', 'west']:
+        destination = zonemap[myPlayer.location][LEFT]
+        movement_handler(destination)
+    elif dest in ['right', 'east']: 
+        destination = zonemap[myPlayer.location][RIGHT]
+        movement_handler(destination)
+
+def movement_handler(destination):
+    print('\n' + 'You have moved to the ' + destination + '.')
+    myPlayer.location = destination
+    print_location()
+
+def player_examine(action):
+    if zonemap([myPlayer.location][SOLVED]):
+        print('You have exhausted this room.')
+    else:
+        print('You can trigger puzzles here.')
 
 #### GAME FUNCTIONALITY ####
+
+def start_game(): 
+    return
+
+def main_game_loop():
+    while myPlayer.game_over is False:
+        prompt()
+        # Here handle if puzzles have been solved, explored every zone, boss defeated etc
+
+def setup_game():
+    os.system('clear')
+
+    question1 = "Hello, what's your name?"
+    for character in question1:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.05)
+
+title_screen()
+
