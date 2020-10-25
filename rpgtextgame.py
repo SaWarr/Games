@@ -319,11 +319,40 @@ def main_game_loop():
 def setup_game():
     os.system('clear')
 
-    question1 = "Hello, what's your name?"
+    # NAME COLLECTING #
+    question1 = "Hello, what's your name?\n"
     for character in question1:
         sys.stdout.write(character)
         sys.stdout.flush()
-        time.sleep(0.05)
+        time.sleep(0.04)
+    player_name = input(">")
+    myPlayer.name = player_name
+
+    # CHOOSE ROLE #
+    question2 = "And are you a warrior or a mage?\n"
+    # question2added = "You can play as a war, mage, or priest"
+    for character in question2:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.04)
+    # for character in question2added:
+    #     sys.stdout.write(character)
+    #     sys.stdout.flush()
+    #     time.sleep(0.01)
+    player_role = input(">").lower()
+    # The below for a free-er choice rather than if or
+    # Keeping it commented for now
+    # valid_roles = ['warrior', 'mage', 'priest]
+    # if player_roles.lower() in valid_roles:
+    # indent and use below assignment
+    myPlayer.role = player_role
+    print('Welcome, ' + myPlayer.name + ', ' + myPlayer.role + ' of the blackened Keyboard.')
+    # else:
+    #   while player_role.lower() not in valid_roles: 
+    #   player_role = input(">").lower()
+    #       
+
+
 
 title_screen()
 
