@@ -29,7 +29,7 @@ myPlayer = PLAYER()
 def title_screen_selections():
     option = input("> ")
     if option.lower() == ("play"):
-        start_game() # Placeholder until written
+        setup_game() # Placeholder until written
     elif option.lower() == ("help"):
         help_menu() # Another placeholder
     elif option.lower() == ("quit"):
@@ -39,7 +39,7 @@ def title_screen_selections():
         # Not sure the following needs to be here but following tutorial for now
         option = input("> ")
         if option.lower() == ("play"):
-            start_game() # Placeholder until written
+            setup_game() # Placeholder until written
         elif option.lower() == ("help"):
             help_menu() # Another placeholder
         elif option.lower() == ("quit"):
@@ -308,11 +308,8 @@ def player_examine(action):
 
 #### GAME FUNCTIONALITY ####
 
-def start_game(): 
-    return
-
 def main_game_loop():
-    while myPlayer.game_over is False:
+    while myPlayer.gaplayme_over is False:
         prompt()
         # Here handle if puzzles have been solved, explored every zone, boss defeated etc
 
@@ -325,7 +322,7 @@ def setup_game():
         sys.stdout.write(character)
         sys.stdout.flush()
         time.sleep(0.04)
-    player_name = input(">")
+    player_name = input("> ")
     myPlayer.name = player_name
 
     # CHOOSE ROLE #
@@ -339,7 +336,7 @@ def setup_game():
     #     sys.stdout.write(character)
     #     sys.stdout.flush()
     #     time.sleep(0.01)
-    player_role = input(">").lower()
+    player_role = input("> ").lower()
     # The below for a free-er choice rather than if or
     # Keeping it commented for now
     # valid_roles = ['warrior', 'mage', 'priest]
@@ -347,11 +344,43 @@ def setup_game():
     # indent and use below assignment
     myPlayer.role = player_role
     print('Welcome, ' + myPlayer.name + ', ' + myPlayer.role + ' of the blackened Keyboard.')
-    # else:
-    #   while player_role.lower() not in valid_roles: 
-    #   player_role = input(">").lower()
-    #       
+    # while player_role.lower() not in valid_roles: 
+    # player_role = input(">")
+    #     if player_role.lower() in valid_roles:
+    #         myPlayer.role = player_role
+    #         print('Welcome, ' + myPlayer.name + ', ' + myPlayer.role + ' of the blackened Keyboard.')
 
+
+    #### PLAYER STATS ####
+    if myPlayer.role == 'warrior':
+        self.hp = 120
+        self.mp = 30
+    elif myPlayer.role == 'mage':
+        self.hp = 80
+        self.mp = 60
+
+    ### INTRODUCTION ####
+    speech1 = "You are now in my little test, my little world. I hope you're well prepared.\n"
+    speech2 = "...try not to get lost. Or die. Whatever.\n"
+    speech3 = "Hehehehe...\n"
+    for character in speech1:
+        sys.stdout.write(character)
+    sys.stdout.flush()
+    time.sleep(0.04)
+    for character in speech2:
+        sys.stdout.write(character)
+    sys.stdout.flush()
+    time.sleep(0.1)
+    for character in speech3:
+        sys.stdout.write(character)
+    sys.stdout.flush()
+    time.sleep(0.2)
+
+    os.system('clear')
+    print('#################')
+    print("Let's begin...")
+    print('#################')
+    main_game_loop()
 
 
 title_screen()
