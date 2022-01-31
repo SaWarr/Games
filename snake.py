@@ -1,4 +1,4 @@
-# Another in more OO style
+# Another in more OO style TWT
 
 import math
 import random
@@ -8,16 +8,33 @@ from tkinter import messagebox
 
 # Cube object
 class cube(object):
-    rows = 0
-    w = 0
-    def __init__(self, start, dirnx=1, dirny=0, colour=(255,0,0)):
-        pass
+    rows = 20
+    w = 500
+    def __init__(self, start, dirnx=1, dirny=0, color=(255,0,0)):
+        self.pos = start
+        self.dirnx = 1 #dirnx set to one so moves before a key is pressed
+        self.dirny = 0
+        self.color = color
 
     def move(self, dirnx, dirny):
-        pass
+        self.dirnx = dirnx
+        self.dirny = dirny
+        self.pos(self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
 
-    def draw (self, surfcae, eyes=False):
-        pass
+    def draw (self, surface, eyes=False):
+        dis = self.w // self.rows
+        i = self.pos[0]
+        j = self.pos[1]
+
+        pygame.draw.rect(surface, self.color, (i*dis+1, j*dis+1, dis-2, dis-2))
+        if eyes: # Shamelessly stolen, circle drwings are weird
+            centre = dis //2
+            radius = 3
+            circleMiddle = (i*dis + centre - radius, j*dis+8)
+            circleMiddle2 = (i*dis + dis - radius*2, j*dis+8)
+            pygame.draw.circle(surface, (0,0,0), circleMiddle, radius)
+            pygame.draw.circle(surface, (0,0,0), circleMiddle2, radius)
+
 
 # Snake object
 class snake(object):
@@ -80,7 +97,11 @@ class snake(object):
         pass
 
     def draw(self, surface):
-        pass
+        for i, c in enumerate(self.body):
+            if i == 0:
+                c.draw(surface, True) # Draw eyes if it's the head ie first cube0
+            else:
+                c.draw(surface)
 
 def drawGrid(w, rows, surface):
     sizeBetween = w // rows
@@ -94,7 +115,8 @@ def drawGrid(w, rows, surface):
 
 
 def redrawWindow(surface):
-    global rows, width
+    global rows, width, s
+    s.draw(surface)
     surface.fill((0,0,0))
     drawGrid(width, rows, surface)
     pygame.display.update()
@@ -107,11 +129,11 @@ def message_box(subject, contet):
     pass
 
 def main():
-    global width, rows
+    global width, rows, s
     width = 500
     rows = 20
     win = pygame.display.set_mode((width, width))
-    s = snake((255,0,0), (0,0))
+    s = snake((255,0,0), (10,10))
     flag = True
 
     clock = pygame.time.Clock()
